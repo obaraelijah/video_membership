@@ -9,13 +9,14 @@ BASE_DIR = pathlib.Path(__file__).resolve().parent
 
 settings = config.get_settings()
 
-ASTRADB_CONNECT_BUNDLE =BASE_DIR / "unencrypted" / "astradb-connect.zip"
+ASTRADB_CONNECT_BUNDLE = BASE_DIR / "unencrypted" / "astradb_connect.zip"
+
 ASTRADB_CLIENT_ID = settings.db_client_id
 ASTRADB_CLIENT_SECRET = settings.db_client_secret
 
 def get_session():
     cloud_config= {
-    'secure_connect_bundle': 'ASTRADB_CONNECT_BUNDLE'
+            'secure_connect_bundle': ASTRADB_CONNECT_BUNDLE
     }
     auth_provider = PlainTextAuthProvider(ASTRADB_CLIENT_ID, ASTRADB_CLIENT_SECRET)
     cluster = Cluster(cloud=cloud_config, auth_provider=auth_provider)
