@@ -5,6 +5,7 @@ from . import config, db
 from cassandra.cqlengine.management import sync_table
 
 app = FastAPI()
+DB_SESSION = None
  # settings = config.get_settings()
 
 
@@ -12,7 +13,8 @@ app = FastAPI()
 def on_startup():
     #triggered when fastapi starts
     print("hello world")
-    db.get_session()
+    global DB_SESSION
+    DB_SESSION = db.get_session()
     sync_table(User)
     
 @app.get("/")
