@@ -9,7 +9,7 @@ from .users.schemas import (
     UserLoginSchema,
     UserSignupSchema
 )
-from .shortcuts import render
+from .shortcuts import redirect, render
 from cassandra.cqlengine.management import sync_table
 from pydantic.error_wrappers import ValidationError
 
@@ -64,8 +64,7 @@ def login_post_view(request: Request,
     if len(errors) > 0:
         return render(request, "auth/login.html", context, status_code=400)
         
-    return render(request,"auth/login.html",{"logged_in": True}, 
-        cookies=data)
+    return redirect("/", cookies=data)
      
 
 @app.get("/signup", response_class=HTMLResponse)
@@ -91,10 +90,7 @@ def signup_post_view(request: Request,
     }
     if len(errors) > 0:
         return render(request, "auth/signup.html", context, status_code=400)
-    return render(request,"auth/signup.html",{
-        "data": data,
-        "errors": errors, 
-    })
+    return redirect("/login")
     
 
 @app.get("/users")
