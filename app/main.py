@@ -4,8 +4,11 @@ from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from .users.models import User
-from . import config, db
-from .users.schemas import UserSignupSchema
+from . import config, db, utils
+from .users.schemas import (
+    UserLoginSchema,
+    UserSignupSchema
+)
 from cassandra.cqlengine.management import sync_table
 from pydantic.error_wrappers import ValidationError
 
@@ -51,10 +54,17 @@ def login_post_view(request: Request,
     email: str=Form(...),
     password: str = Form(...)):
     print(email, password)
+    raw_data = {
+      "email": email,
+       "password": password,
+    }
+    data , errors = utils.valid_schema_data_or_error(raw_data, UserLoginSchema)
     return templates.TemplateResponse("auth/login.html", {
         "request": request,
+        "data": data,
+        "errors": errors,
     })
-    
+     
 
 @app.get("/signup", response_class=HTMLResponse)
 def signup_get_view(request: Request):
@@ -69,19 +79,12 @@ def signup_post_view(request: Request,
     password: str = Form(...),
     password_confirm: str = Form(...)
     ):
-    data = {}
-    errors = []
-    error_str = ""
-    try:
-        cleaned_data = UserSignupSchema(email=email, 
-        password=password, password_confirm=password_confirm)
-        data = cleaned_data.dict()
-    except ValidationError as e:
-        error_str = e.json()
-    try:
-        errors = json.loads(error_str)
-    except Exception as e:
-        errors = [{"loc": "non_field_error", "msg": "Unkwown error"}]
+    raw_data = {
+      "email": email,
+       "password": password,
+       "password_confirm": password_confirm
+    }
+    data , errors = utils.valid_schema_data_or_error(raw_data, UserSignupSchema) 
     return templates.TemplateResponse("auth/signup.html",{
         "request": request,
         "data": data,
