@@ -9,6 +9,7 @@ from .users.schemas import (
     UserLoginSchema,
     UserSignupSchema
 )
+from .shortcuts import render
 from cassandra.cqlengine.management import sync_table
 from pydantic.error_wrappers import ValidationError
 
@@ -36,18 +37,14 @@ def on_startup():
 @app.get("/", response_class=HTMLResponse)
 def homepage(request: Request):
     context = {
-        "request": request,
         "abc": 123
     }
-    return templates.TemplateResponse("home.html", context)
+    return render(request,"home.html", context)
 
 
 @app.get("/login", response_class=HTMLResponse)
 def login_get_view(request: Request):
-
-    return templates.TemplateResponse("auth/login.html", {
-        "request": request,
-    })
+    return render(request, "auth/login.html")
 
 @app.post("/login", response_class=HTMLResponse)
 def login_post_view(request: Request,
@@ -58,20 +55,22 @@ def login_post_view(request: Request,
       "email": email,
        "password": password,
     }
-    data , errors = utils.valid_schema_data_or_error(raw_data, UserLoginSchema)
-    return templates.TemplateResponse("auth/login.html", {
-        "request": request,
-        "data": data,
-        "errors": errors,
-    })
+    data , errors = utils.valid_schema_data_or_error(raw_data,UserLoginSchema)
+    context = {
+                "data": data,
+                "errors": errors,
+            }
+    if len(errors) > 0:
+        return render(request, "auth/login.html", context, status_code=400)
+        
+    print(data['password'].get_secret_value())
+    return render(request,"auth/login.html",context)
      
 
 @app.get("/signup", response_class=HTMLResponse)
 def signup_get_view(request: Request):
 
-    return templates.TemplateResponse("auth/signup.html", {
-        "request": request,
-    })
+    return render(request,"auth/signup.html")
 
 @app.post("/signup", response_class=HTMLResponse)
 def signup_post_view(request: Request,
@@ -84,9 +83,10 @@ def signup_post_view(request: Request,
        "password": password,
        "password_confirm": password_confirm
     }
-    data , errors = utils.valid_schema_data_or_error(raw_data, UserSignupSchema) 
-    return templates.TemplateResponse("auth/signup.html",{
-        "request": request,
+    data , errors = utils.valid_schema_data_or_error(raw_data, UserSignupSchema)
+    if len(errors) > 0:
+        return render(request, "auth/signup.html", context, status_code=400)
+    return render(request,"auth/signup.html",{
         "data": data,
         "errors": errors, 
     })
