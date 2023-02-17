@@ -1,13 +1,14 @@
 
 import datetime
+from jose import jwt, ExpiredSignatureError
 from app import config
-from jose import ExpiredSignatureError, jwt
+
 from .models import User
 
 settings = config.get_settings()
 
 def authenticate(email, password):
-    #step 1
+    # step 1
     try:
         user_obj = User.objects.get(email=email)
     except Exception as e:
@@ -19,7 +20,7 @@ def authenticate(email, password):
 def login(user_obj, expires = 5):
     # step 2
     raw_data = {
-    "user_id": f"{user_obj.id}",
+    "user_id": f"{user_obj.user_id}",
     "role": "admin",    
     "exp": datetime.datetime.utcnow() + datetime.timedelta
     (seconds=expires)
