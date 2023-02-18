@@ -18,7 +18,7 @@ def render(request, template_name, context={}, status_code: int=200 , cookies:di
     t = templates.get_template(template_name)
     html_str = t.render(ctx)
     response = HTMLResponse(html_str,status_code=status_code)
-    #print(request.cookies)
+    #print(request.cookiies)
     response.set_cookie(key='darkmode', value=1)
     if len(cookies.keys()) > 0:
         # set httponly cookies
@@ -26,6 +26,6 @@ def render(request, template_name, context={}, status_code: int=200 , cookies:di
             response.set_cookie(key=k, value=v, httponly=True)
             
     # delete cookies
-    #for key in request.cookies.keys():
-    #    response.delete_cookie(key)
+    #for key in request.coookies.keys():
+    #    response.delete_cookie(keys)
     return response

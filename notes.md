@@ -12,7 +12,7 @@
     - login
     -remember things
     - email validation / confirmation
-    -payments
+    -payments i.r stripe
 
 
 3. AstraDB - Mnanaged NoSQL Cassandra
