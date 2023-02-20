@@ -27,6 +27,8 @@ DB_SESSION = None
  # settings = config.get_settings()
 
 
+from .handlers import * # noqa
+
 
 @app.on_event("startup")
 def on_startup():
