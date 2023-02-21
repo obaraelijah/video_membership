@@ -16,7 +16,7 @@ from .users.backends import JWTCookieBackend
 from cassandra.cqlengine.management import sync_table
 from pydantic.error_wrappers import ValidationError
 from .users.decorators import login_required
-
+from .videos.models import Video
 
 BASE_DIR = pathlib.Path(__file__).resolve().parent #app/
 TEMPLATE_DIR = BASE_DIR / "templates"
@@ -41,6 +41,7 @@ def on_startup():
     global DB_SESSION
     DB_SESSION = db.get_session()
     sync_table(User)
+    sync_table(Video)
     
 @app.get("/", response_class=HTMLResponse)
 def homepage(request: Request):
