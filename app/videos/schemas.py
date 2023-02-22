@@ -1,3 +1,4 @@
+import uuid
 from pydantic import (
     BaseModel,
     validator,
@@ -14,7 +15,7 @@ from .models import Video
 
 class VideoCreateSchema(BaseModel):
     url: str  # user generated
-    user_id: str # request.session user_id
+    user_id:  uuid.UUID # request.  session user_id
     
     
     @validator("url")
@@ -28,6 +29,8 @@ class VideoCreateSchema(BaseModel):
     @root_validator
     def validate_data(cls, values):
         url = values.get("url")
+        if url is None:
+            raise ValueError("A valid url is required.")
         user_id = values.get("user_id")
         video_obj = None
         try:

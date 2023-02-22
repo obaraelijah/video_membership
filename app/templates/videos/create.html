@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Add Video</h1>
+
+{% include 'snippets/form_errors.html' %}
+
+<form method="POST">
+    <div>
+        <label for="url">YouTube Link</label>
+        <input type="text" name="url" id='url' placeholder='https://www.youtube.com/watch?v=uxpDa-c-4Mc' value="{% if url %}{{ url }}{% endif %}">
+    </div>
+
+    <button type='submit'>Add Video</button>
+    
+</form>
+
+
+{% endblock %} 
+
+
