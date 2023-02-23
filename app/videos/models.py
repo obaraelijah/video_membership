@@ -18,7 +18,8 @@ class Video(Model):
     __keyspace__ = settings.keyspace
     host_id =  columns.Text(primary_key=True)  # youtube , vimeo 
     db_id = columns.UUID(primary_key=True, default=uuid.uuid1)
-    host_service = columns.Text(default='youtube') 
+    host_service = columns.Text(default='youtube')
+    title = columns.Text() 
     url = columns.Text()
     user_id = columns.UUID()
      # user_display_name
@@ -28,7 +29,7 @@ class Video(Model):
     
     
     def __repr__(self):
-        return f"Video(host_id={self.host_id},host_service={self.host_service})"
+        return f"Video(title={self.title}, host_id={self.host_id},host_service={self.host_service})"
     
     
     def as_data(self):
@@ -40,7 +41,7 @@ class Video(Model):
      
     
     @staticmethod
-    def add_video(url, user_id=None):
+    def add_video(url, user_id=None, **kwargs):
         # extract video_id from url
         # video_id = host_id
         # service API - Youtube/vimeo ...
@@ -55,7 +56,7 @@ class Video(Model):
         q = Video.objects.allow_filtering().filter(host_id=host_id, user_id=user_id)
         if q.count() != 0:
             raise VideoAlreadyAddedException("Video already added")
-        return Video.create(host_id=host_id, user_id=user_id, url=url)
+        return Video.create(host_id=host_id, user_id=user_id, url=url, **kwargs)
     
     
     
