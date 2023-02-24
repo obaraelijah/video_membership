@@ -5,5 +5,21 @@
 {{ host_id }}
 {{ object }}
 
-{{ object.render()|safe }}
+
+
+<div id='yt-video'></div>
+
+<div><code>{{ object.render() }}</code></div>
+
+<script>
+    var youtubeVideoDiv = document.getElementById('yt-video')
+    function onYouTubeIframeAPIReady() {
+        new YT.Player('yt-video', {
+
+        })
+    };
+
+</script>
+
+
 {% endblock %}
