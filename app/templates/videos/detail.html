@@ -12,12 +12,70 @@
 <div><code>{{ object.render() }}</code></div>
 
 <script>
+    //youtube iframe API
     var youtubeVideoDiv = document.getElementById('yt-video')
+    var player;
+    var currentTime;
+    var isPlaying;
+    var monitorTimeOut;
     function onYouTubeIframeAPIReady() {
-        new YT.Player('yt-video', {
-
+        player = new YT.Player('yt-video', {
+                height: '390',
+                width: '640',
+                videoId: '{{ host_id }}',
+                playerVars: {
+                    'modestBranding': 1,
+                    'autoplay': 0,
+                    'start': 0,
+                    'playsinline': 1,
+                    'controls': 1,
+                },
+                events: {
+                    onReady: onPlayerReady,
+                    onStateChange: onPlayerStateChange
+                }
         })
     };
+
+
+
+    function onPlayerReady(event){
+        player.seekTo(45)
+        //player.playVideo();
+    }
+
+
+
+    function showCurrentTime(){
+        currentTime = player.getCurrentTime()
+        console.log('currentTime', currentTime)
+        if (isPlaying) {
+            monitorTimeOut = setTimeout(showCurrentTime, 1 * 1000)
+        }
+    }
+
+
+    function onPlayerStateChange(event) {
+        
+        if (event.data === YT.PlayerState.PLAYING){
+            console.log("is playing")
+            isPlaying = true
+            showCurrentTime()
+            
+        }
+        else if (event.data === YT.PlayerState.PAUSED){
+            console.log("is paused")
+            isPlaying = false
+            clearTimeout(monitorTimeOut)
+            showCurrentTime()
+        }
+        else if (event.data === YT.PlayerState.ENDED){
+            console.log("is ended")
+            isPlaying = false
+            clearTimeout(monitorTimeOut)
+            showCurrentTime()
+        }
+    }
 
 </script>
 
