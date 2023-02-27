@@ -25,6 +25,7 @@
         var monitorTimeOut;
         var monitorTimeInterval = 200;
         var videoId = youtubeVideoDiv.getAttribute("data-video-id")
+        var watchEventEndpoint = "/api/events/watch"
         var timeSinceLastSaved =0;
         var timeIntervalForSave = 5000;
 
@@ -58,7 +59,6 @@
 
     function monitorCurrentPlayback(){
         currentTime = player.getCurrentTime()
-        console.log('currentTime', currentTime)
         timeSinceLastSaved += monitorTimeInterval
         if (isPlaying) {
             monitorTimeOut = setTimeout(monitorCurrentPlayback, monitorTimeInterval)
@@ -73,20 +73,17 @@
     function onPlayerStateChange(event) {
         
         if (event.data === YT.PlayerState.PLAYING){
-            console.log("is playing")
             isPlaying = true
             monitorCurrentPlayback()
             
         }
         else if (event.data === YT.PlayerState.PAUSED){
-            console.log("is paused")
             isPlaying = false
             clearTimeout(monitorTimeOut)
             monitorCurrentPlayback()
             storeWatchEvent()
         }
         else if (event.data === YT.PlayerState.ENDED){
-            console.log("is ended")
             isPlaying = false
             clearTimeout(monitorTimeOut)
             monitorCurrentPlayback()
@@ -105,7 +102,7 @@
             complete: (duration * .98) < currentTime
         }
         timeSinceLastSaved = 0;
-        console.log('saving...', data)
+       // console.log('saving...', data)
 
      // send POST data 
     // JSON ->
@@ -116,14 +113,14 @@
             },
             body: JSON.stringify(data)
         }
-        fetch("/watch-event", reqOptions)
+        fetch(watchEventEndpoint, reqOptions)
         .then(response=>response.json())
-        .then(data=> {
-            console.log("success", data)
+        .then(data=> { 
+           // console.log("success", data)
         })
         .catch(err => {
             // fetch to an error catching endpoint
-            console.log('error: ', err )
+           // console.log('error: ', err )
         })
     }
     

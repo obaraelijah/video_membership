@@ -19,7 +19,8 @@ from .users.decorators import login_required
 from .videos.models import Video
 from .videos.routers import router as video_router
 from .watch_events.models import WatchEvent
-from .watch_events.schemas import WatchEventSchema
+from .watch_events.routers import router as watch_event_router
+
 
 BASE_DIR = pathlib.Path(__file__).resolve().parent #app/
 
@@ -27,7 +28,7 @@ BASE_DIR = pathlib.Path(__file__).resolve().parent #app/
 app = FastAPI()
 app.add_middleware(AuthenticationMiddleware, backend=JWTCookieBackend())
 app.include_router(video_router)
-
+app.include_router(watch_event_router)
 
 from .handlers import * # noqa
 
@@ -114,19 +115,3 @@ def users_list_view():
     q =User.objects.all().limit(10)
     return list(q)
 
-#import json
-# json.dumps()
-#json.loads(jsnon_str) -> dict
-
-@app.post("/watch-event", response_model=WatchEventSchema)
-def watch_event_view(request:Request, watch_event:WatchEventSchema):
-    cleaned_data = watch_event.dict()
-    data = cleaned_data.copy()
-    data.update({
-        "user_id": request.user.username
-    })
-    print("data", data)
-    if (request.user.is_authenticated):
-       WatchEvent.objects.create(**data)
-       return watch_event
-    return watch_event 
