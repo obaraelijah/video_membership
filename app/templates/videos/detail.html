@@ -101,7 +101,28 @@
         }
         timeSinceLastSaved = 0;
         console.log('saving...', data)
+
+     // send POST data 
+    // JSON ->
+        var reqOptions = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        }
+        fetch("/watch-event", reqOptions)
+        .then(response=>response.json())
+        .then(data=> {
+            console.log("success", data)
+        })
+        .catch(err => {
+            // fetch to an error catching endpoint
+            console.log('error: ', err )
+        })
     }
+    
+    
 
 </script>
 
