@@ -10,7 +10,7 @@ from app.videos.models import Video
 
 settings = config.get_settings()
 
-class PlayList(Model):
+class Playlist(Model):
     __keyspace__= settings.keyspace
     db_id = columns.UUID(primary_key=True, default=uuid.uuid1)
     user_id = columns.UUID()
@@ -18,6 +18,9 @@ class PlayList(Model):
     host_ids = columns.List(value_type=columns.Text)
     title = columns.Text()
     
+    @property
+    def path(self):
+        return f"/playlists/{self.db_id} "
     
     def add_host_ids(self, host_ids=[], replace_all=False):
         if not isinstance(host_ids, list):
