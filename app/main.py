@@ -6,7 +6,7 @@ from fastapi.templating import Jinja2Templates
 from starlette.middleware.authentication import AuthenticationMiddleware
 from starlette.authentication import requires
 
-from .playlists.routers import router as playlist_router
+from .playlist.routers import router as playlist_router
 
 from .users.models import User
 from . import config, db, utils
