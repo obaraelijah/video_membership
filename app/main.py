@@ -36,7 +36,6 @@ app.include_router(watch_event_router)
 
 from .handlers import * # noqa
 
-
 @app.on_event("startup")
 def on_startup():
     #triggered when fastapi starts
