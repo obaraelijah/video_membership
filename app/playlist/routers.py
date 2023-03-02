@@ -16,7 +16,7 @@ from app.videos.schemas import VideoCreateSchema
 from app import utils
 
 from app.watch_events.models import WatchEvent
-from .schemas import PlaylistCreateSchema
+from .schemas import PlaylistCreateSchema , PlaylistVideoAddSchema
 
 from .models import Playlist
 
@@ -99,9 +99,10 @@ def playlist_video_add_post_view(
     raw_data = {
         "title": title,
         "url": url,
-        "user_id": request.user.username
+        "user_id": request.user.username,
+        "playlist_id": db_id
     }
-    data, errors = utils.valid_schema_data_or_error(raw_data, VideoCreateSchema)
+    data, errors = utils.valid_schema_data_or_error(raw_data, PlaylistVideoAddSchema)
     redirect_path = data.get('path') or f"/playlists/{db_id}"
     
     context = {
