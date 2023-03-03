@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class='row'>
+    <div class='col-12 col-md-3'>
+        {% include 'playlists/sidebar.html' %}
+
+    </div>
+    <div class='col-12 col-md-9'>
 <h1>Add Playlist</h1>
 
 {% include 'snippets/form_errors.html' %}
@@ -15,6 +21,9 @@
     <button type='submit'>Add Playlist</button>
     
 </form>
+
+</div>
+</div>
 
 
 {% endblock %} 
