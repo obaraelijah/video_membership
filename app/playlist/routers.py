@@ -1,5 +1,5 @@
 import uuid
-
+from typing import Optional
 from starlette.exceptions import HTTPException
 
 from fastapi import APIRouter, Request,Form , Depends
@@ -123,3 +123,28 @@ def playlist_video_add_post_view(
     
     context = {"path": redirect_path, "title": data.get('title')}
     return render(request, "videos/htmx/link.html", context)
+
+
+@router.post("/{db_id}/{host_id}/delete/", response_class=HTMLResponse)
+def playlist_remove_video_item_view(
+        request: Request,
+        db_id: uuid.UUID,
+        host_id: str,
+        is_htmx = Depends(is_htmx),
+        index:Optional[int] = Form(default=None)
+    ):
+    if not is_htmx:
+        raise HTTPException(status_code=400)
+    try:
+        obj = get_object_or_404(Playlist, db_id=db_id)
+    except:
+        return HTMLResponse("Error. Please reload the page.")
+    if not request.user.is_authenticated:
+        return HTMLResponse("Please login and continue")
+    if isinstance(index, int):
+        host_ids = obj.host_ids
+        if index >= len(host_ids) or index < 0:
+            return HTMLResponse("Index out of range")
+        host_ids.pop(index)
+        obj.add_host_ids(host_ids=host_ids, replace_all=True)
+    return HTMLResponse("Deleted")
