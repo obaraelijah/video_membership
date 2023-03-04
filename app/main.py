@@ -27,7 +27,6 @@ from .watch_events.routers import router as watch_event_router
 
 BASE_DIR = pathlib.Path(__file__).resolve().parent #app/
 
-
 app = FastAPI()
 app.add_middleware(AuthenticationMiddleware, backend=JWTCookieBackend())
 app.include_router(playlist_router)
@@ -91,6 +90,8 @@ def login_post_view(request: Request,
 def signup_get_view(request: Request):
 
     return render(request,"auth/signup.html")
+
+
 
 @app.post("/signup", response_class=HTMLResponse)
 def signup_post_view(request: Request,

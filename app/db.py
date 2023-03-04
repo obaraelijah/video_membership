@@ -15,6 +15,7 @@ ASTRADB_CLIENT_ID = settings.db_client_id
 ASTRADB_CLIENT_SECRET = settings.db_client_secret
 
 
+
 def get_session():
     cloud_config= {
             'secure_connect_bundle': ASTRADB_CONNECT_BUNDLE
