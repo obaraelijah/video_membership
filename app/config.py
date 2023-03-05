@@ -14,6 +14,9 @@ class Settings(BaseSettings):
     secret_key: str = Field(...)
     jwt_algorithm: str = Field(default='HS256')
     session_duration: int = Field(default=86400) # number of secs in a day_  
+    algoria_app_id = str
+    algoria_api_key: str
+    algoria_index_name: str
     class Config:
         env_file = '.env'
     
