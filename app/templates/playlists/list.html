@@ -12,6 +12,8 @@
             <h1>Playlists</h1>
         <div class="list-group">
         {% for object in object_list %}
+        
+            
                 <a class="list-group-item list-group-item-action" href="{{ object.path }}">
                 {% if not object.title %}{{ object.db_id }}{% else %}{{ object.title }}{% endif %}
                 </a>

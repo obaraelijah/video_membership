@@ -1,90 +1,97 @@
 {% extends "base.html" %}
 
+
+
 {% block content %}
+<div class='row'>
+
+    <div class='col-md-9 col-12'>
 
 
-{% if object.title %}<h1>{{ object.title }}</h1>{% endif %}
-<p>{{ start_time }}</p>
+
+<div class='ratio ratio-16x9' id='yt-video' data-video-id="{{ host_id }}" data-start-time='{{ start_time }}'></div>
+
+</div>
 
 
+<div class='col-md-3 col-12'>
+    
+    {% if object.title %}<h5>{{ object.title }}</h5>{% endif %}
 
-<div id='yt-video' data-video-id = "{{ host_id }}" data-start-time='{{ start_time }}'></div>
+    <code>{{ object.render() }}</code>
+</div>
 
-<div><code>{{ object.render() }}</code></div>
+
+</div>
 
 <script>
-    //youtube iframe API
     var youtubeVideoDiv = document.getElementById('yt-video')
-    
-
-    if (youtubeVideoDiv) {
+    if (youtubeVideoDiv){
+        var videoId = youtubeVideoDiv.getAttribute("data-video-id")
+        var defaultStartTime = 0;
+        var initialStartTime = parseInt(youtubeVideoDiv.getAttribute("data-start-time")) || defaultStartTime;
+        var watchEventEndpoint = "/api/events/watch"
         var player;
         var currentTime;
         var isPlaying;
-        var defaultStartTime = 0;
-        var initialStartTime =parseInt(youtubeVideoDiv.getAttribute("data-start-time")) || defaultStartTime;
         var monitorTimeOut;
         var monitorTimeInterval = 200;
-        var videoId = youtubeVideoDiv.getAttribute("data-video-id")
-        var watchEventEndpoint = "/api/events/watch"
-        var timeSinceLastSaved =0;
+        var timeSinceLastSaved = 0;
         var timeIntervalForSave = 5000;
-
         function onYouTubeIframeAPIReady() {
+            // console.log("hello world");
             player = new YT.Player('yt-video', {
-                    height: '390',
-                    width: '640',
-                    videoId: videoId,
-                    playerVars: {
-                        'modestBranding': 1,
-                        'autoplay': 0,
-                        'start': 0,
-                        'playsinline': 1,
-                        'controls': 1,
-                    },
-                    events: {
-                        onReady: onPlayerReady,
-                        onStateChange: onPlayerStateChange
-                    }
+                height: '390',
+                width: '640',
+                videoId: videoId,
+                playerVars: {
+                    'modestbranding': 1,
+                    'autoplay': 0,
+                    'start': 0,
+                    'playsinline': 1,
+                    'controls': 1,
+                }, 
+                events: {
+                    onReady: onPlayerReady, 
+                    onStateChange: onPlayerStateChange
+                }
             })
         };
-}
-
+    }
 
     function onPlayerReady(event){
         player.seekTo(initialStartTime)
-        //player.playVideo();
+        // player.playVideo()
     }
-
-
-
-    function monitorCurrentPlayback(){
+    function monitorCurrentPlayback() {
         currentTime = player.getCurrentTime()
         timeSinceLastSaved += monitorTimeInterval
         if (isPlaying) {
-            monitorTimeOut = setTimeout(monitorCurrentPlayback, monitorTimeInterval)
+            monitorTimeOut = setTimeout(monitorCurrentPlayback, monitorTimeInterval) 
         }
 
         if (timeSinceLastSaved > timeIntervalForSave) {
-           storeWatchEvent()
+            storeWatchEvent()
         }
     }
-
-
     function onPlayerStateChange(event) {
-        
-        if (event.data === YT.PlayerState.PLAYING){
+       
+        if (event.data === YT.PlayerState.PLAYING) {
+            // console.log("is playing")
             isPlaying = true
             monitorCurrentPlayback()
-            
         }
-        else if (event.data === YT.PlayerState.PAUSED){
+
+        else if (event.data === YT.PlayerState.PAUSED) {
+            // console.log("is paused")
             isPlaying = false
             clearTimeout(monitorTimeOut)
             monitorCurrentPlayback()
             storeWatchEvent()
         }
-        else if (event.data === YT.PlayerState.ENDED){
+
+        else if (event.data === YT.PlayerState.ENDED) {
+            // console.log("is ended")
             isPlaying = false
             clearTimeout(monitorTimeOut)
             monitorCurrentPlayback()
@@ -103,10 +110,10 @@
             complete: (duration * .98) < currentTime
         }
         timeSinceLastSaved = 0;
-       // console.log('saving...', data)
+        // console.log('saving...', data)
 
-     // send POST data 
-    // JSON ->
+        // send POST data
+        // JSON -> JavaScript Object Notion
         var reqOptions = {
             method: "POST",
             headers: {
@@ -116,16 +123,15 @@
         }
         fetch(watchEventEndpoint, reqOptions)
         .then(response=>response.json())
-        .then(data=> { 
-           // console.log("success", data)
+        .then(data=>{
+            // console.log("success:", data)
         })
         .catch(err => {
             // fetch to an error catching endpoint
-           // console.log('error: ', err )
+            // console.log('error: ', err)
         })
     }
-    
-    
+
 
 </script>
 
