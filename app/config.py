@@ -13,14 +13,15 @@ class Settings(BaseSettings):
     db_client_secret: str = Field(..., env='ASTRADB_CLIENT_SECRET')
     secret_key: str = Field(...)
     jwt_algorithm: str = Field(default='HS256')
-    session_duration: int = Field(default=86400) # number of secs in a day_  
-    algoria_app_id = str
-    algoria_api_key: str
-    algoria_index_name: str
+    session_duration: int = Field(default=86400)
+    algolia_app_id: str
+    algolia_api_key: str
+    algolia_index_name: str
+
     class Config:
         env_file = '.env'
-    
-@lru_cache 
+
+
+@lru_cache
 def get_settings():
     return Settings()
-  
