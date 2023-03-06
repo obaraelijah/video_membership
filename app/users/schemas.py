@@ -39,8 +39,7 @@ class UserSignupSchema(BaseModel):
         if q.count() != 0:
             raise ValueError("Email is not available")
         return v
-            
-        
+              
         
     @validator("password_confirm")
     def passwords_match(cls, v, values, **kwargs):
