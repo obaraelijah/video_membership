@@ -13,7 +13,6 @@ async def http_exception_handler(request, exc):
     context = {"status_code": status_code}
     return render(request, template_name, context, status_code=status_code)
 
-
 @app.exception_handler(LoginRequiredException)
 async def login_required_exception_handler(request, exc):
     response = redirect(f"/login?next={request.url}", remove_session=True)

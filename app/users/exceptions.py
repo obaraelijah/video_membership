@@ -6,8 +6,6 @@ class LoginRequiredException(HTTPException):
 
 # class LoginRequiredException(Exception):
 #     pass
-
-
 class UserHasAccountException(Exception):
     """User already has account."""
 
