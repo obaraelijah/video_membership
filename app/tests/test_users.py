@@ -4,10 +4,8 @@ from app import db
 
 @pytest.fixture(scope='module')
 def setup():
-    #setup
     session = db.get_session()
     yield session
-    # teardown
     q = User.objects.filter(email='test@gmail.com')
     if q.count() != 0:
         q.delete()
