@@ -6,7 +6,6 @@ from cassandra.cqlengine.models import Model
 from cassandra.cqlengine.query import (DoesNotExist, MultipleObjectsReturned)
 from app.config import get_settings
 from app.shortcuts import templates
-
 from .exceptions import(
     InvalidYouTubeVideoURLException,
     VideoAlreadyAddedException
@@ -14,8 +13,6 @@ from .exceptions import(
 from .extractors import extract_video_id
 
 settings = get_settings()
-
-
 class Video(Model):
     __keyspace__ = settings.keyspace
     host_id =  columns.Text(primary_key=True)  # youtube , vimeo 
@@ -92,8 +89,6 @@ class Video(Model):
         if q.count() != 0:
             raise VideoAlreadyAddedException("Video already added")
         return Video.create(host_id=host_id, user_id=user_id, url=url, **kwargs)
-    
-    
     
    # class PrivateVideo(Video):
    #     pass

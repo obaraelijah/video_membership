@@ -56,13 +56,11 @@ class VideoCreateSchema(BaseModel):
         #    video_obj.title = title
          #   video_obj.save()
         return video_obj.as_data() 
-    
-    
+        
 class VideoEditSchema(BaseModel):
         url: str  # user generated
         title: str  
-        
-    
+           
 @validator("url")
 def validate_youtube_url(cls, v, values, **kwargs):
         url = v

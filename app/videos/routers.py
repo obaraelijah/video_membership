@@ -1,11 +1,8 @@
 from typing import Optional
 import uuid
-
 from starlette.exceptions import HTTPException
-
 from fastapi import APIRouter, Request,Form , Depends
 from fastapi.responses import HTMLResponse
-
 from app.users.decorators import login_required
 from app.shortcuts import (
     render,
@@ -26,9 +23,6 @@ from .models import Video
 router = APIRouter(
     prefix='/videos'
 )
-
-
-
 
 @router.get("/create", response_class=HTMLResponse)
 @login_required
@@ -114,8 +108,6 @@ def video_edit_view(request: Request, host_id: str):
     }
     return render(request, "videos/edit.html", context)
 
-
-
 @router.post("/{host_id}/edit", response_class=HTMLResponse)
 @login_required
 def video_edit_post_view(
@@ -141,7 +133,6 @@ def video_edit_post_view(
     obj.update_video_url(url, save=True)
     return render(request, "videos/edit.html", context, status_code=400)
 
-
 @router.get("/{host_id}/hx-edit", response_class=HTMLResponse)
 @login_required
 def video_hx_edit_view(
@@ -162,10 +153,6 @@ def video_hx_edit_view(
         "object": obj
     }
     return render(request, "videos/htmx/edit.html", context) 
-
-
-
-
 
 @router.post("/{host_id}/hx-edit", response_class=HTMLResponse)
 @login_required
