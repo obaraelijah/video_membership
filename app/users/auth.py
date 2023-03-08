@@ -38,7 +38,5 @@ def verify_user_id(token):
         pass
     if 'user_id' not in data:
         return None
-    # if 'user_id' not in data.keys():
-    #     return None
     return data
         
