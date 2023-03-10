@@ -50,3 +50,5 @@ ALGOLIA_API_KEY=your_algolia_api_key
 ```bash
 $ uvicorn main:app --reload
 ```
+## Conclusion
+This Video Membership App provides video management and access control features for users. It uses FastAPI and NoSQL to create a fast and scalable app that can handle large amounts of video data.
