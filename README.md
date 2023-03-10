@@ -45,3 +45,8 @@ SECRET_KEY=your_secret_key
 ALGOLIA_APP_ID=your_algolia_app_id
 ALGOLIA_API_KEY=your_algolia_api_key
 ```
+
+4. Start the app:
+```bash
+$ uvicorn main:app --reload
+```
