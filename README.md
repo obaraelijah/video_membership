@@ -5,7 +5,9 @@ Creating a Video Membership app using FastAPI &amp; NoSQL
 - User subscription management
 - Video management (uploading, deleting, updating)
 - Video access control
-
+- Saving Secure, Hashed, Passwords
+- Video Analytics & Resumable Videos
+- Search Engine
 ## Dependencies
 - fastapi
 - uvicorn 
@@ -19,13 +21,12 @@ Creating a Video Membership app using FastAPI &amp; NoSQL
 - python-jose[cryptography]
 - algoliasearch
 
-## Installation
-1. Clone the repository.
-`https://github.com/obaraelijah/video_membership.git
-cd video_membership
-`
 
-2. Create a virtual environment and activate it:
-`python -m env venv
-source env/bin/activate
-`
+## Installation
+
+1. Clone the repository
+
+```bash
+  https://github.com/obaraelijah/video_membership.git
+  cd video_membership
+```
