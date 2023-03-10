@@ -27,6 +27,20 @@ Creating a Video Membership app using FastAPI &amp; NoSQL
 1. Clone the repository
 
 ```bash
-  https://github.com/obaraelijah/video_membership.git
-  cd video_membership
+ $ https://github.com/obaraelijah/video_membership.git
+ $ cd video_membership
 ```
+2. Install the dependencies:
+
+```bash
+ $ pip install -r requirements.txt or pip3 install -r requirements.txt
+```
+3. Set up the environment variables:
+Create a .env file in the project's root directory with the following variables:
+`
+CASSANDRA_HOST=your_cassandra_host
+CASSANDRA_KEYSPACE=your_keyspace_name
+SECRET_KEY=your_secret_key
+ALGOLIA_APP_ID=your_algolia_app_id
+ALGOLIA_API_KEY=your_algolia_api_key
+`
