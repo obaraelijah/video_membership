@@ -20,14 +20,12 @@ Creating a Video Membership app using FastAPI &amp; NoSQL
 - algoliasearch
 
 ## Installation
-1. Clone the repository
+1. Clone the repository.
 `https://github.com/obaraelijah/video_membership.git
 cd video_membership
 `
 
-## Create a virtual environment and activate it:
-` 
-python -m env venv
+2. Create a virtual environment and activate it:
+`python -m env venv
 source env/bin/activate
-
 `
