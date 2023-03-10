@@ -37,10 +37,11 @@ Creating a Video Membership app using FastAPI &amp; NoSQL
 ```
 3. Set up the environment variables:
 Create a .env file in the project's root directory with the following variables:
-`
+
+```bash
 CASSANDRA_HOST=your_cassandra_host
 CASSANDRA_KEYSPACE=your_keyspace_name
 SECRET_KEY=your_secret_key
 ALGOLIA_APP_ID=your_algolia_app_id
 ALGOLIA_API_KEY=your_algolia_api_key
-`
+```
