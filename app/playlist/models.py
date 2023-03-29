@@ -18,7 +18,8 @@ class Playlist(Model):
     updated = columns.DateTime(default=datetime.utcnow())
     host_ids = columns.List(value_type=columns.Text) # ["abc123"]
     title = columns.Text()
-
+    
+    
     @property
     def path(self):
         return f"/playlists/{self.db_id}"
